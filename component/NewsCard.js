@@ -9,7 +9,8 @@ import {
     Image,
     Text,
     Animated,
-    PanResponder
+    PanResponder,
+    ActivityIndicator
 } from 'react-native'
 import { fetchNews } from '../utils/Api'
 import { Font } from 'expo'
@@ -30,10 +31,15 @@ class NewsCard extends Component {
     state={
         news:null,
         fontLoaded: false,
-        currentIndex: 0
+        currentIndex: 0,
+        loader:true
     };
 
     componentWillMount(){
+        if(this.props.filterSearchNewsId){
+            this.setState({currentIndex:this.props.filterSearchNewsId})
+        }
+        
         this.panResponder = PanResponder.create({
             onStartShouldSetPanResponder:(evt,gestureState)=>true,
             onPanResponderMove:(evt,gestureState)=>{
@@ -77,7 +83,7 @@ class NewsCard extends Component {
 
     async componentDidMount(){
         await fetchNews().then((data) => {
-            this.setState({news:data})
+            this.setState({news:data, loader:false})
         });
         await Font.loadAsync({
             'lato-regular': require('../Fonts/lato/Lato-Regular.ttf'),
@@ -88,15 +94,20 @@ class NewsCard extends Component {
     }
 
     render(){
-        const {news, fontLoaded, currentIndex} = this.state;
+        const {news, fontLoaded, currentIndex, loader} = this.state;
+        const {menuNews, filterNewsCategory,filterSearchNews,navigation} = this.props
         let filterNews
-        if(this.props.filterNewsCategory){
-            filterNews = this.props.filterNewsCategory
+        if(menuNews===true){
+            if(filterNewsCategory){
+                filterNews = filterNewsCategory
+            }
         }
-        else if(news){
+        else if(filterSearchNews){
+            filterNews = filterSearchNews
+        }else if(news){
             filterNews = news['articles'].filter((data) => data['title'] !== '' && data['description'] !== '' && data['urlToImage'] !== '');
         }
-        
+
         return(
             <View style={styles.c}>
                 {
@@ -108,10 +119,10 @@ class NewsCard extends Component {
                                         {...this.panResponder.panHandlers}
                                         style={[styles.card,
                                     this.swippedNewsPosition.getLayout(),
-                                    {height:sHeight-20, width:sWidth ,position:'absolute'}]}
+                                    {height:sHeight-40, width:sWidth ,position:'absolute'}]}
                                         key={data['title']}
                                     >
-                                        <News title="lato-regular" desc="lato-m" data={data} image={styles.image}/>
+                                        <News title="lato-regular" desc="lato-m" data={data} image={styles.image} navigation={navigation}/>
                                     </Animated.View>
                                 )
                             }
@@ -127,7 +138,7 @@ class NewsCard extends Component {
                                     {height:sHeight, width:sWidth ,position:'absolute'}]}
                                         key={data['title']}
                                     >
-                                        <News title="lato-regular" desc="lato-m" data={data} image={styles.image}/>
+                                        <News title="lato-regular" desc="lato-m" data={data} image={styles.image} navigation={navigation}/>
                                     </Animated.View>
                                 )
                             }else{
@@ -137,7 +148,7 @@ class NewsCard extends Component {
                                     {height:sHeight, width:sWidth ,position:'absolute'}]}
                                         key={data['title']}
                                     >
-                                        <News title="lato-regular" desc="lato-m" data={data} image={styles.image}/>
+                                        <News title="lato-regular" desc="lato-m" data={data} image={styles.image} navigation={navigation}/>
                                     </Animated.View>
                                 )
                             }
@@ -157,10 +168,7 @@ const styles = StyleSheet.create({
     },
     card:{
         flex:1,
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
-        borderBottomLeftRadius:15,
-        borderBottomRightRadius:15,
+        borderRadius: 20,
         backgroundColor: '#fff',
         shadowRadius: 3,
         shadowOpacity: 0.8,
@@ -169,6 +177,8 @@ const styles = StyleSheet.create({
             width: 0,
             height: 3
         },
+        borderBottomWidth:1,
+        borderBottomColor:'silver',
     },
     image:{
         height: 250,
@@ -176,6 +186,11 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
     },
+    loader:{
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
+    }
 });
 
 export default NewsCard

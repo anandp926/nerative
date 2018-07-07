@@ -21,13 +21,8 @@ export const categoryNews = (category = '') =>{
 
 export const topics = [
     {
-        "name":"fifa2018",
-        "url":require("../icons/icons/worldcup.png"),
-        "keyword":"football"
-    },
-    {
-        "name":"india",
-        "url":require("../icons/icons/india.png"),
+        "name":"health",
+        "url":require("../icons/icons/stethoscope.png"),
         "keyword":"health"
     },
     {

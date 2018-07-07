@@ -44,7 +44,7 @@ class MenuScreen extends Component{
                                         <TouchableOpacity 
                                             key={index} 
                                             style={styles.menuCard}
-                                            onPress={() => this.props.navigation.navigate('MenuNews',{category:data['keyword']})}
+                                            onPress={() => this.props.navigation.navigate('MenuNews',{category:data['keyword'], menuNews:true})}
                                         >
                                             <Image style={styles.photos} source={data['url']}/>
                                             <View style={{marginTop:20}}>

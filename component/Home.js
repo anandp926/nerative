@@ -2,8 +2,8 @@
  * Created by rozer on 6/24/2018.
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, Image, ScrollView} from 'react-native';
-import {Ionicons } from '@expo/vector-icons'
+import { View, StyleSheet, Dimensions, Text, Keyboard, TextInput, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {Ionicons,Entypo } from '@expo/vector-icons'
 import moment from 'moment'
 import {searchNews} from '../utils/Api'
 import SearchCard from './SearchCard'
@@ -18,36 +18,42 @@ class Home extends Component {
         searchValue:'',
         searchNews:null,
         menuScreen:false,
-        searchButtonEnable:true
+        searchButtonEnable:true,
+        loading:false
     };
     
     newsSearch = () => {
+        this.setState({loading:true})
         const { searchValue } = this.state;
         const date = moment().format("YYYY-MM-DD");
         if(searchValue === undefined && !date){
             this.setState({searchValue:''})
         }else{
             searchNews(searchValue,date).then((data) => {
-                this.setState({searchNews:data})
-            })
+                this.setState({searchNews:data, loading:false})
+            });
+            Keyboard.dismiss()
         }
-    }
+    };
 
     changeScreen = () => {
         this.setState({
             menuScreen:false,
             searchValue:'',
-            searchButtonEnable:true
-        })
-    }
+            searchButtonEnable:true,
+            searchNews:null
+        });
+        Keyboard.dismiss()
+    };
     
     render() {
         
-        const { searchNews, menuScreen, searchButtonEnable } = this.state;
-        let filterSearchNews;
+        const { searchNews, menuScreen, searchButtonEnable, loading } = this.state;
+        let filterSearchNews, totalResult;
         if(searchNews !==undefined && searchNews !== null){
             filterSearchNews = searchNews['articles']
                 .filter((data) => data['title'] !== '' && data['description'] !== '' && data['source']['name'] !== '' && data['urlToImage'] !== '');
+            totalResult=searchNews['totalResults']
         }
         
         return (
@@ -57,8 +63,8 @@ class Home extends Component {
                         {menuScreen
                             ?
                             <TouchableOpacity style={styles.backButton} onPress={this.changeScreen}>
-                                <Ionicons
-                                    name="md-arrow-back"
+                                <Entypo
+                                    name="cross"
                                     style={{marginTop:10}}
                                     size={22} color="#000"
                                 />
@@ -86,7 +92,7 @@ class Home extends Component {
                 </View>
                 {menuScreen
                     ?
-                        <SearchCard filterSearchNews={filterSearchNews} navigation={this.props.navigation}/>
+                        <SearchCard filterSearchNews={filterSearchNews} totalResult={totalResult} navigation={this.props.navigation} loading={loading}/>
                     :
                         <MenuScreen navigation={this.props.navigation}/>
                 }
@@ -140,7 +146,7 @@ const styles = StyleSheet.create({
     backButton:{
         marginRight:15,
         marginTop:7
-    }
+    },
 });
 
 export default Home
