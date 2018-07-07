@@ -2,7 +2,7 @@
  * Created by rozer on 7/6/2018.
  */
 import React, {Component} from 'react'
-import {View, TouchableOpacity} from 'react-native'
+import {View, TouchableOpacity,StyleSheet} from 'react-native'
 import NewsCard from './NewsCard'
 import {Ionicons } from '@expo/vector-icons'
 
@@ -16,7 +16,7 @@ class SearchNewsCard extends Component{
         
         return(
             <View>
-                <View style={{height:40, backgroundColor:'#fff', borderBottomWidth:1, borderBottomColor:'silver'}}>
+                <View style={styles.header}>
                     <TouchableOpacity  onPress={() => this.props.navigation.goBack()}>
                         <Ionicons
                             name="md-arrow-back"
@@ -35,5 +35,14 @@ class SearchNewsCard extends Component{
     }
 }
 
+const styles = StyleSheet.create({
+    header:{
+        justifyContent:'center',
+        height:40,
+        backgroundColor:'#fff',
+        borderBottomWidth:1,
+        borderBottomColor:'silver'
+    }
+});
 
 export default SearchNewsCard
