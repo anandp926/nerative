@@ -49,8 +49,8 @@ class Home extends Component {
     render() {
         
         const { searchNews, menuScreen, searchButtonEnable, loading } = this.state;
-        let filterSearchNews, totalResult;
-        if(searchNews !==undefined && searchNews !== null){
+        let filterSearchNews, totalResult,msg;
+        if(searchNews && searchNews.status=="ok"){
             filterSearchNews = searchNews['articles']
                 .filter((data) => data['title'] !== '' && data['description'] !== '' && data['source']['name'] !== '' && data['urlToImage'] !== '');
             totalResult=searchNews['totalResults']

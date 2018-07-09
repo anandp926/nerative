@@ -1,17 +1,17 @@
 {
-  "expo": {
-    "sdkVersion": "27.0.0",
-    "orientation": "portrait",
-    "name": "Nerative",
-    "description": "Updated news",
-    "slug": "nerative",
-    "version": "1.1",
-    "icon": "./newspaper.png",
-    "ios": {
-      "bundleIdentifier": "org.nerative.exp"
-    },
-    "android": {
-      "package": "org.nerative.exp"
+    "expo": {
+        "sdkVersion": "27.0.0",
+        "orientation": "portrait",
+        "name": "Nerative",
+        "description": "Find latest news every time.",
+        "slug": "nerative",
+        "version": "1.0",
+        "icon": "./newspaper.png",
+        "ios": {
+            "bundleIdentifier": "org.nerative.exp"
+        },
+        "android": {
+            "package": "org.nerative.exp"
+        }
     }
-  }
 }
