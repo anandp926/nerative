@@ -1,13 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, Dimensions, StatusBar, Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation'
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 import NewsCard from './component/NewsCard'
-import NewsPage from './component/NewsPage'
 import Home from './component/Home'
 import WebSearch from './component/WebSearch'
 import MenuNews from './component/MenuNews'
 import SearchNewsCard from './component/SearchNewsCard'
-import Testing from './component/Testing'
 import { Constants } from 'expo'
 import { Ionicons } from '@expo/vector-icons'
 
